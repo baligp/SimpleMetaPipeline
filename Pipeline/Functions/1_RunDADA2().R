@@ -135,13 +135,17 @@ RunDADA2<-function(
                 err <- learnErrors(filts, multithread=multithread)
                 print("learnErrors Complete")
 
+                # Set the error model based on ReadType
                 if (ReadType=="Premerged"){
-                    # inflate errors to deal with problems introduced to error scores by merging forward and reverse befoer running dada2
-                    inflatedErr<-inflateErr(err, 3)
+                    # inflate errors to deal with problems introduced to error scores by merging forward and reverse before running dada2
+                    inflatedErr <- inflateErr(err, 3)
+                    errorModel <- inflatedErr
+                } else {
+                    errorModel <- err
                 }
 
                 # denoise
-                dada <- dada(filts, err=inflatedErr, multithread=multithread,pool=pool)
+                dada <- dada(filts, err=errorModel, multithread=multithread, pool=pool)
                 print("denoise Complete")
 
                 # rename to mergers to feed into next step making sequence table
@@ -151,7 +155,7 @@ RunDADA2<-function(
                 RunDadaPlots[[Run]]<-list()
                 RunDadaPlots[[Run]][[1]]<-plotQualityProfile(fns) #example
                 RunDadaPlots[[Run]][[2]]<-plotQualityProfile(filts) #example
-                RunDadaPlots[[Run]][[3]]<-plotErrors(inflatedErr, nominalQ=TRUE)
+                RunDadaPlots[[Run]][[3]]<-plotErrors(errorModel, nominalQ=TRUE)
 
                 # create read tracking table 
                 track <- cbind(out, sapply(dada, getN)) # If processing a single sample, remove the sapply calls: e.g. replace sapply(dadaFs, getN) with getN(dadaFs)
