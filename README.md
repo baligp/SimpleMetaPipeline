@@ -22,7 +22,7 @@ This creates a directory structure as follows:
 Once the directory is set up we need to download the pipeline code, from this repository, into our directory structure. If you have git installed you can run the code below:
 
     cd BioinformaticPipeline_Env
-    git clone https://github.com/J-Cos/SimpleMetaPipeline BioinformaticPipeline
+    git clone https://github.com/baligp/SimpleMetaPipeline BioinformaticPipeline
 
 Alternatively you can do this manually by pressing the button marked "< > Code" above and then choosing "Download ZIP" from the dropdown menu. Once donwloaded unzip the file, copy it into the BioinformaticPipeline_Env directory and rename it to:
 - BioinformaticPipeline
