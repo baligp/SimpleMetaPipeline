@@ -17,7 +17,7 @@ dataPath<-NULL
 dataname="Example"
 # this should be the name you associate with this set of fastqs,  the inout fastq folder should be labelled with this
 # and all output and result files will be labelled with this name.
-multithread=20
+multithread=280
 # number of threads to use on parallelised steps within the pipeline
 
 # Cutadapt settings https://cutadapt.readthedocs.io/en/stable/ ------------------------
@@ -29,12 +29,12 @@ REV = "RGYTACCTTGTTACGACTT"
 ## your reverse primer sequence
 
 # DADA2 settings https://benjjneb.github.io/dada2/index.html --------------------------
-NumberOfRuns<-1
+NumberOfRuns<-7
 # Number of sequencing runs used to generate the data for this experiment, e.g. 1 or 2
-truncLen= list(0)
+truncLen= list(0,0,0,0,0,0,0)
 # the lengths at which the sequences should be truncated (forward and reverse) for each run. If single-end or pre-merged 
 # sequences are input only a single number is required for each entry in the list.
-trimLeft= list(0)
+trimLeft= list(0,0,0,0,0,0,0)
 # the # of bases to remove from the start of the sequences (forward and reverse) for each run. If single-end or pre-merged 
 # sequences are input only a single number is required for each entry in the list.
 maxN=0
@@ -54,7 +54,7 @@ DesiredSequenceLengthRange=NULL
 pool="pseudo"
 # TRUE, FALSE, or pseudo. pseudo pooling approximates the effect of denoising with pooled samples, but with
 # linearly increasing computational time (ca. doubled compared to no pooling)
-MixedOrientation="FALSE"
+MixedOrientation="TRUE"
 # TRUE or FALSE. FALSE (default) means dada2 proceeds in the normal fashion. TRUE means that _RO and _FO 
 # suffixes will be looked for in the sample names to enable samples containing reverse orientation (RO) sequences 
 # to be reverse complemented and then merged into the matching sample containing the forward orientated sequences.
@@ -90,11 +90,11 @@ differences=1
 # number of base differences at which swarm clustering will be performed (1=default)                               
 SimilarityThreshold = 0.97
 # %age similarity at which to cluster sequences as a decimal
-threads=20
+threads=280
 # number of threads available 
 
 # lulu settings2 https://github.com/tobiasgf/lulu ---------------------------------------------
-MatchRate2=90 #as a %, default 84
+MatchRate2=84 #as a %, default 84
 # % matching bases to consider clustering OTUs if co-occurence seen. 
 MinRelativeCo2 = 0.95 #as a decimal, default 0.95
 # minimum_relative_cooccurence: minimum co-occurrence rate – i.e. the
@@ -137,7 +137,7 @@ SeqsToAssign ="ESVs"
 threshold=50
 # %age confidence of assignment required to record assignment
 # 30=low confidence, 40=moderate, 50 = high, 60= very high
-parallel=FALSE
+parallel=TRUE
 # whether idtaxa should be run in parallel using the number of cores specififed with the multithread argument.
 # each core will classify 500 sequences at a time using parallel::mclapply. Setting this to TRUE is recommended 
 # on an an HC with more than 10 cores. Note that this is a workaround as Idtaxa's inbuilt parallelisation seems
