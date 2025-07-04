@@ -44,9 +44,9 @@ maxEE=c(10)
 # will be discarded (forward and reverse). Expected errors are calculated from the nominal definition 
 # of the quality score: EE = sum(10^(-Q/10)). If single-end or pre-merged 
 # sequences are input only a single number is required.
-truncQ=0
+truncQ=20
 # Truncate reads at the first instance of a quality score less than or equal to ‘truncQ’. 
-DesiredSequenceLengthRange=NULL
+DesiredSequenceLengthRange=1400:1600
 # sequence length range to keep enter as e.g. 360:270, if NULL all sequence lengths are kept. 
 # Sequences that are much longer or shorter than expected
 # may be the result of non-specific priming. This removal is analogous to “cutting a band” 
@@ -64,7 +64,7 @@ ReadType="Single-read"
 # to error rates introduced by premerging the paired-end reads.
 
 # lulu settings1 https://github.com/tobiasgf/lulu -------------------------
-MatchRate1=90 #as a %, default 84
+MatchRate1=99 #as a %, default 84
 # % matching bases to consider clustering OTUs if co-occurence seen. 
 MinRelativeCo1 = 0.95 #as a decimal, default 0.95
 #minimum_relative_cooccurence: minimum co-occurrence rate – i.e. the
@@ -88,13 +88,13 @@ linkage = "complete"
 # either complete (vsearch) or single (swarm)
 differences=1
 # number of base differences at which swarm clustering will be performed (1=default)                               
-SimilarityThreshold = 0.97
+SimilarityThreshold = 0.99
 # %age similarity at which to cluster sequences as a decimal
 threads=280
 # number of threads available 
 
 # lulu settings2 https://github.com/tobiasgf/lulu ---------------------------------------------
-MatchRate2=84 #as a %, default 84
+MatchRate2=99 #as a %, default 84
 # % matching bases to consider clustering OTUs if co-occurence seen. 
 MinRelativeCo2 = 0.95 #as a decimal, default 0.95
 # minimum_relative_cooccurence: minimum co-occurrence rate – i.e. the
@@ -116,7 +116,7 @@ RatioType2 = "min" # options: "min" and "avg"
 # IDTAXA settings https://www.bioconductor.org/packages/release/bioc/vignettes/DECIPHER/inst/doc/ClassifySequences.pdf ----------------------------
 IDTAXA =TRUE
 # whether to run IDTAXA assignment, TRUE or FALSE
-desiredranks<-c("rootrank", "domain", "phylum", "class", "order", "family", "genus")
+desiredranks<-c("Root", "Domain", "Phylum", "Class", "Order", "Family", "Genus")
 # determine this based on the training set you are using (accessible with trainingSet[[3]] once the trainingSet is loaded into R). If this trainingSet
 # does not contain ranks then this is ignored, and it is assumed all reference sequences have an assignment at 
 # all ranks. If this is not the case assignment will be unusable. If the trainingSet does contain ranks then only 
@@ -134,7 +134,7 @@ trainingSet= "SILVA_SSU_r138_2019.RData"
 # http://www2.decipher.codes/Downloads.html
 SeqsToAssign ="ESVs"
 # whether to make assignments to "ESVs", "OTUs", or "cOTUs". default of assigning to ESVs is recommended to make full use of multi-algorithm agreement.
-threshold=50
+threshold=60
 # %age confidence of assignment required to record assignment
 # 30=low confidence, 40=moderate, 50 = high, 60= very high
 parallel=TRUE
