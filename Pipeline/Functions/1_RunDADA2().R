@@ -145,7 +145,7 @@ RunDADA2<-function(
                 }
 
                 # denoise
-                dada <- dada(filts, err=errorModel, multithread=multithread, pool=pool)
+                dada <- dada(filts, err=errorModel, multithread=multithread, pool=pool, errorEstimationFunction = PacBioErrfun)
                 print("denoise Complete")
 
                 # rename to mergers to feed into next step making sequence table
