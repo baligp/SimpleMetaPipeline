@@ -116,7 +116,7 @@ RatioType2 = "min" # options: "min" and "avg"
 # IDTAXA settings https://www.bioconductor.org/packages/release/bioc/vignettes/DECIPHER/inst/doc/ClassifySequences.pdf ----------------------------
 IDTAXA =TRUE
 # whether to run IDTAXA assignment, TRUE or FALSE
-desiredranks<-c("Root", "Domain", "Phylum", "Class", "Order", "Family", "Genus")
+desiredranks<-c("rootrank", "domain", "phylum", "class", "order", "family", "genus")
 # determine this based on the training set you are using (accessible with trainingSet[[3]] once the trainingSet is loaded into R). If this trainingSet
 # does not contain ranks then this is ignored, and it is assumed all reference sequences have an assignment at 
 # all ranks. If this is not the case assignment will be unusable. If the trainingSet does contain ranks then only 
