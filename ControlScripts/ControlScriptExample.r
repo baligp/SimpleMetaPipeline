@@ -88,7 +88,7 @@ linkage = "complete"
 # either complete (vsearch) or single (swarm)
 differences=1
 # number of base differences at which swarm clustering will be performed (1=default)                               
-SimilarityThreshold = 0.99
+SimilarityThreshold = 1
 # %age similarity at which to cluster sequences as a decimal
 threads=280
 # number of threads available 
