@@ -132,22 +132,19 @@ RunDADA2<-function(
                     verbose=TRUE) 
                 print("filterAndTrim Complete")
 
-                err <- learnErrors(filts, multithread=multithread)
+
+                #Dereplicate the filtered fastq files
+                derep <- derepFastq(filts, verbose = TRUE)
+                print("Dereplication Complete")
+
+                #Learn errors using the PacBio-specific error function on the dereplicated object
+                err <- learnErrors(derep, errorEstimationFunction = PacBioErrfun, multithread = multithread)
                 print("learnErrors Complete")
-
-                # Set the error model based on ReadType
-                if (ReadType=="Premerged"){
-                    # inflate errors to deal with problems introduced to error scores by merging forward and reverse before running dada2
-                    inflatedErr <- inflateErr(err, 3)
-                    errorModel <- inflatedErr
-                } else {
-                    errorModel <- err
-                }
-
-                # denoise
-                dada <- dada(filts, err=errorModel, multithread=multithread, pool=pool, errorEstimationFunction = PacBioErrfun)
+                
+                #Denoise using the learned error model and dereplicated data.
+                dada <- dada(derep, err = err, multithread = multithread, pool = pool, BAND_SIZE = 32)
                 print("denoise Complete")
-
+    
                 # rename to mergers to feed into next step making sequence table
                 mergers <- dada    
                                         
