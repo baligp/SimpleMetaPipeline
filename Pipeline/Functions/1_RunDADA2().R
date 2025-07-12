@@ -152,7 +152,7 @@ RunDADA2<-function(
                 RunDadaPlots[[Run]]<-list()
                 RunDadaPlots[[Run]][[1]]<-plotQualityProfile(fns) #example
                 RunDadaPlots[[Run]][[2]]<-plotQualityProfile(filts) #example
-                RunDadaPlots[[Run]][[3]]<-plotErrors(errorModel, nominalQ=TRUE)
+                RunDadaPlots[[Run]][[3]]<-plotErrors(err, nominalQ=TRUE)
 
                 # create read tracking table 
                 track <- cbind(out, sapply(dada, getN)) # If processing a single sample, remove the sapply calls: e.g. replace sapply(dadaFs, getN) with getN(dadaFs)
