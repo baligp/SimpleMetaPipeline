@@ -132,21 +132,19 @@ RunDADA2<-function(
                     verbose=TRUE) 
                 print("filterAndTrim Complete")
 
-
                 #Dereplicate the filtered fastq files
                 derep <- derepFastq(filts, verbose = TRUE)
                 print("Dereplication Complete")
 
-                #Reorient sequences for PacBio compatibility
                 print("Checking and correcting sequence orientation. This is essential for PacBio reads before denoising.")
-
+                
                 # Ensure the DECIPHER library is available
                 if (!requireNamespace("DECIPHER", quietly = TRUE)) {
                     stop("The DECIPHER package is required for sequence orientation. Please install it.")
                 }
                 
-                # Extract all unique sequences from the dereplicated data
-                unique_seqs <- getUniques(derep, collapse = TRUE)
+                # Correctly extract all unique sequences by passing the list of derep objects to getUniques
+                unique_seqs <- getUniques(derep) 
                 
                 # Orient all unique sequences to match the majority orientation
                 oriented_seqs <- DECIPHER::OrientNucleotides(DNAStringSet(unique_seqs))
@@ -155,7 +153,6 @@ RunDADA2<-function(
                 orientation_map <- setNames(as.character(oriented_seqs), names(unique_seqs))
 
                 # Apply the corrected orientation back to the derep object
-                # This loop is necessary because `derep` is a list of objects, one for each sample
                 for(sample_name in names(derep)) {
                     sample_uniques <- derep[[sample_name]]$uniques
                     new_uniques_names <- orientation_map[names(sample_uniques)]
@@ -169,8 +166,8 @@ RunDADA2<-function(
                     derep[[sample_name]]$quals <- NULL 
                 }
                 
-                print("Sequence orientation corrected across all samples.")
- 
+                print("Sequence orientation corrected across all samples.")                   
+                    
                 #Learn errors using the PacBio-specific error function on the dereplicated object
                 err <- learnErrors(derep, errorEstimationFunction = PacBioErrfun, multithread = multithread)
                 print("learnErrors Complete")
