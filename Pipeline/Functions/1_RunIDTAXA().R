@@ -22,7 +22,7 @@ RunIdtaxa<-function(IDTAXA, trainingSet, TableToMergeTo, SeqsToAssign=SeqsToAssi
 
         # Add sequence orientation step
         print("Reorienting single-end sequences against training set")
-        dna <- DECIPHER::OrientNucleotides(dna, trainingSet = trainingSet)
+        dna <- DECIPHER::OrientNucleotides(dna)
 
         # splitquery sequences into chunks
         dna_list<-split(dna, ceiling(seq_along(dna)/QuerySequenceChunkSize))
