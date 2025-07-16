@@ -20,6 +20,10 @@ RunIdtaxa<-function(IDTAXA, trainingSet, TableToMergeTo, SeqsToAssign=SeqsToAssi
         # load the specified trainingset
         load(file.path(path, "Data", "Classifiers", trainingSet))
 
+        # Add sequence orientation step
+        print("Reorienting single-end sequences against training set")
+        dna <- DECIPHER::OrientNucleotides(dna, trainingSet = trainingSet)
+
         # splitquery sequences into chunks
         dna_list<-split(dna, ceiling(seq_along(dna)/QuerySequenceChunkSize))
         print(paste0("Query sequences split into ", length(dna_list), " chunks of ", QuerySequenceChunkSize, " sequences"))
