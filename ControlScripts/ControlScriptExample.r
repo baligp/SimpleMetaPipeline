@@ -14,10 +14,10 @@ dataPath<-NULL
 # if NULL (default) then the fastqs will be found in the FASTQs directory of the BioinformaticPipeline_Env directory. Normally there is no reason to modify this.
 # In the case of large datasets in external storage or research data stores on HPCs you can specify the path to the fastqs here. Note that all other components of the 
 # pipeline will work as normal and all outputs will be written to the BioinformaticPipeline_Env/IntermediateOutputs and BioinformaticPipeline_Env/Results.
-dataname="Example"
+dataname="UREN_16S"
 # this should be the name you associate with this set of fastqs,  the inout fastq folder should be labelled with this
 # and all output and result files will be labelled with this name.
-multithread=280
+multithread=270
 # number of threads to use on parallelised steps within the pipeline
 
 # Cutadapt settings https://cutadapt.readthedocs.io/en/stable/ ------------------------
@@ -44,7 +44,7 @@ maxEE=c(10)
 # will be discarded (forward and reverse). Expected errors are calculated from the nominal definition 
 # of the quality score: EE = sum(10^(-Q/10)). If single-end or pre-merged 
 # sequences are input only a single number is required.
-truncQ=20
+truncQ=0
 # Truncate reads at the first instance of a quality score less than or equal to ‘truncQ’. 
 DesiredSequenceLengthRange=1400:1600
 # sequence length range to keep enter as e.g. 360:270, if NULL all sequence lengths are kept. 
@@ -62,6 +62,9 @@ ReadType="Single-read"
 # default "Paired-end". Other options: "Single-read" and "Premerged". Premerged refers to paired-end data which has been merged prior to input into the pipeline.
 # This is not recommended but in some historic datasets it is unavoidable. In this case DADA2's inflateErr(inflation=3) function is used to correct distortions
 # to error rates introduced by premerging the paired-end reads.
+DetectSingletons = TRUE
+# TRUE or FALSE. Helps the detection of very rare variants (singletons). Recommended for high-diversity environments.
+
 
 # lulu settings1 https://github.com/tobiasgf/lulu -------------------------
 MatchRate1=99 #as a %, default 84
@@ -90,7 +93,7 @@ differences=1
 # number of base differences at which swarm clustering will be performed (1=default)                               
 SimilarityThreshold = 1
 # %age similarity at which to cluster sequences as a decimal
-threads=280
+threads=270
 # number of threads available 
 
 # lulu settings2 https://github.com/tobiasgf/lulu ---------------------------------------------
@@ -129,7 +132,7 @@ desiredranks<-c("rootrank", "domain", "phylum", "class", "order", "family", "gen
 # desiredranks<-c("rootrank", "kingdom", "division", "phylum", "class", "order", "family", "genus")
 # GTDB 16s
 # desiredranks<-c("rootrank", "domain", "phylum", "class", "order", "family", "genus")
-trainingSet= "SILVA_SSU_r138_2019.RData"
+trainingSet= "SILVA_SSU_r138_2_2024.RData"
 # IDTAXA classifier to use, should be the file name for your pretrained classifier. Note these commonly used pre-trained classifiers can be downloaded here:
 # http://www2.decipher.codes/Downloads.html
 SeqsToAssign ="ESVs"
