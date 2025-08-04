@@ -132,48 +132,17 @@ RunDADA2<-function(
                     verbose=TRUE) 
                 print("filterAndTrim Complete")
 
+
                 #Dereplicate the filtered fastq files
                 derep <- derepFastq(filts, verbose = TRUE)
                 print("Dereplication Complete")
 
-                print("Checking and correcting sequence orientation. This is essential for PacBio reads before denoising.")
-                
-                # Ensure the DECIPHER library is available
-                if (!requireNamespace("DECIPHER", quietly = TRUE)) {
-                    stop("The DECIPHER package is required for sequence orientation. Please install it.")
-                }
-                
-                # Correctly extract all unique sequences by passing the list of derep objects to getUniques
-                unique_seqs <- getUniques(derep) 
-                
-                # Orient all unique sequences to match the majority orientation
-                oriented_seqs <- DECIPHER::OrientNucleotides(DNAStringSet(unique_seqs))
-                
-                # Create a map to link original sequences to their new, oriented versions
-                orientation_map <- setNames(as.character(oriented_seqs), names(unique_seqs))
-
-                # Apply the corrected orientation back to the derep object
-                for(sample_name in names(derep)) {
-                    sample_uniques <- derep[[sample_name]]$uniques
-                    new_uniques_names <- orientation_map[names(sample_uniques)]
-                    
-                    # Re-aggregate counts for any sequences that became identical after reorientation
-                    agg_uniques <- tapply(sample_uniques, new_uniques_names, sum)
-                    
-                    # Update the derep object for the current sample
-                    derep[[sample_name]]$uniques <- agg_uniques
-                    # Invalidate quality scores as they no longer match the reoriented sequences
-                    derep[[sample_name]]$quals <- NULL 
-                }
-                
-                print("Sequence orientation corrected across all samples.")                   
-                    
                 #Learn errors using the PacBio-specific error function on the dereplicated object
                 err <- learnErrors(derep, errorEstimationFunction = PacBioErrfun, multithread = multithread)
                 print("learnErrors Complete")
                 
                 #Denoise using the learned error model and dereplicated data.
-                dada <- dada(derep, err = err, multithread = multithread, pool = pool, BAND_SIZE = 32)
+                dada <- dada(derep, err = err, multithread = multithread, pool = pool, BAND_SIZE = 32, DETECT_SINGLETONS= TRUE)
                 print("denoise Complete")
     
                 # rename to mergers to feed into next step making sequence table
