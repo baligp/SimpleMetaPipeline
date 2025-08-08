@@ -2,7 +2,6 @@ RunCutadapt<-function(multithread, FWD, REV, dataname=NULL, UseCutadapt=FALSE) {
     
     if (UseCutadapt == FALSE) return(NULL)
     else if (UseCutadapt == TRUE){
-        # For single-end reads, only look for R1 files
         fnFs <- sort(list.files(file.path(dataPath, "FASTQs", dataname), 
                               pattern="_R1_001.fastq", 
                               full.names = TRUE,
@@ -18,15 +17,15 @@ RunCutadapt<-function(multithread, FWD, REV, dataname=NULL, UseCutadapt=FALSE) {
         # Extract sample names
         SampleNames <- sapply(strsplit(basename(fnFs), "_R1_001.fastq"), `[`, 1)
         
-        # Create paths for filtered outputs (only forward reads)
+        # Create paths for filtered outputs
         filtFs <- createOutputFilePaths(suffix="_F_filt.fastq.gz", 
                                       outputDirectoryPrefix="_prefilteredsequences")
 
-        # Pre-filter only forward reads
+        # Pre-filter
         out <- dada2::filterAndTrim(fnFs, filtFs, maxN=0, rm.phix=TRUE, 
                                   compress=TRUE, multithread=multithread, verbose=TRUE)
 
-        # Count primers in forward reads only
+        # Count primers
         PrimerCountSamplesList <- list()
         for (i in seq_along(filtFs)) {
             PrimerCountSamplesList[[i]] <- rbind(
@@ -36,17 +35,19 @@ RunCutadapt<-function(multithread, FWD, REV, dataname=NULL, UseCutadapt=FALSE) {
 
         # Setup cutadapt output paths
         path.cut <- file.path(path, "IntermediateOutputs", paste0(dataname,"_CutadaptedSeqs"))
-        if(!dir.exists(path.cut)) dir.create(path.cut)
+        if(!dir.exists(path.cut)) dir.create(path.cut, recursive = TRUE)
         fnFs.cut <- file.path(path.cut, basename(fnFs))
 
         FWD.RC <- dada2:::rc(FWD)
         REV.RC <- dada2:::rc(REV)
 
-        # For single-end reads, look for both orientations of both primers
+        #Look for both orientations of both primers
         SE.flags <- paste("-g", FWD,  # Forward primer at start
                          "-a", REV,    # Reverse primer at end
                          "-g", REV.RC, # Reverse-complement of reverse primer at start
-                         "-a", FWD.RC) # Reverse-complement of forward primer at end
+                         "-a", FWD.RC, # Reverse-complement of forward primer at end
+                         "--trimmed-only",
+                         "--revcomp")
 
         # Run Cutadapt
         for(i in seq_along(fnFs)) {
