@@ -39,7 +39,7 @@ trimLeft= list(0,0,0,0,0,0,0)
 # sequences are input only a single number is required for each entry in the list.
 maxN=0
 # after truncation seqs with more than this number of Ns are discarded (DADA2 does not allow Ns so this must be kept to 0 if DADA2 outputs are desired)
-maxEE=c(10)
+maxEE=c(2)
 # After truncation, reads with higher than ‘maxEE’ "expected errors"  
 # will be discarded (forward and reverse). Expected errors are calculated from the nominal definition 
 # of the quality score: EE = sum(10^(-Q/10)). If single-end or pre-merged 
@@ -147,9 +147,9 @@ parallel=TRUE
 # unable to use more than around 10 cores.
 
 # BLAST https://www.ncbi.nlm.nih.gov/books/NBK1734/ --------------------------------------
-Blast= FALSE
+Blast= TRUE
 # run blast or not, TRUE or FALSE
-dbname= NULL 
+dbname= SILVADB
 # name of the blast db you wish to use, should be the directory name of your prebuilt blast database
 assignmentThresholds=c(0, 0, 80, 85, 90, 95, 97)
 # similarity thresholds at which blast assignments should be made. 
