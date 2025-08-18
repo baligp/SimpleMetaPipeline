@@ -9,7 +9,10 @@ RunBLAST<-function(
         clustering="ESV", 
         TableToMergeTo, 
         assignmentThresholds,
-        Blastdesiredranks=NULL) {
+        Blastdesiredranks=NULL,
+        multithread=1,
+        max_target_seqs=1,
+        max_hsps=1) {
 
     # query fasta 
     queryfasta<-paste0(dataname, "_", clustering, "_sequences.fasta")
@@ -25,7 +28,10 @@ RunBLAST<-function(
         file.path(path, "IntermediateOutputs", 
         paste0("BlastOutput_", dbname, ".out")),
         " -outfmt '6 qseqid sseqid pident evalue qcovs' ", 
-        " -evalue 1e-10")) # expect value must be higher than this
+        " -evalue 1e-10",
+        " -num_threads ", multithread,
+        " -max_target_seqs ", max_target_seqs,
+        " -max_hsps ", max_hsps))
     
     # read output into r
     blast_output<-read.table( file.path(path,"IntermediateOutputs", paste0("BlastOutput_", dbname, ".out")), header=FALSE, sep="\t")
